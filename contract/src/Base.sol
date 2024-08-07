@@ -8,15 +8,8 @@ pragma solidity 0.8.24;
  contract Base {
     address private coreTeam;
 
-    mapping(address => bool) private blacklisted;
-
     constructor() {
         coreTeam = msg.sender;
-    }
-
-    modifier blacklistingPass() {
-        require(!blacklisted[msg.sender], "error - you are blacklisted, contact support");
-        _;
     }
 
     function browseAVailableProperty () public view returns (OwnerProfile.propertyDetails[] memory) {
