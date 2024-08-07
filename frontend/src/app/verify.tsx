@@ -1,5 +1,4 @@
 "use client";
-import { getWorldAppId, getBackendURI } from "@/actions/envActions";
 import {
   IDKitWidget,
   VerificationLevel,
@@ -7,16 +6,15 @@ import {
   useIDKit,
 } from "@worldcoin/idkit";
 import { useEffect } from "react";
-import dotenv from "dotenv";
-
-dotenv.config();
+import "dotenv/config";
 
 export function Verify() {
   const { open, setOpen } = useIDKit();
-
-  const APP_ID = (process.env.WORLD_ID_APP_ID || "") as `app_${string}`;
-  const ACTION_ID = "testing-action"; // process.env.ACTION_ID;
+  const APP_ID = process.env.NEXT_PUBLIC_WORLD_APP_ID as `app_${string}`;
   const BACKEND_URI = process.env.BACKEND_URI || "";
+  const ACTION_ID = "testing-action"; // process.env.ACTION_ID;
+
+  console.log(APP_ID);
 
   const handleVerify = async (proof: ISuccessResult) => {
     const res = await fetch(`${BACKEND_URI}/world-id/verify`, {
