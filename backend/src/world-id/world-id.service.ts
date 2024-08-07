@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateWorldIdDto } from './dto/create-world-id.dto';
 import { UpdateWorldIdDto } from './dto/update-world-id.dto';
 import { ISuccessResult, IVerifyResponse } from '@worldcoin/idkit';
+import 'dotenv/config';
 
 @Injectable()
 export class WorldIdService {
@@ -10,7 +11,6 @@ export class WorldIdService {
   }
 
   async verify(proof: ISuccessResult) {
-    const app_id = process.env.WORLD_ID_APP_ID;
     const action = 'testing-action';
 
     return (await verifyProof(proof, action)) as IVerifyResponse;
@@ -33,11 +33,11 @@ export class WorldIdService {
   }
 }
 
-const verifyProof = async (proof: ISuccessResult, action: string) => {
-  console.log('proof', proof);
+async function verifyProof(proof: ISuccessResult, action: string) {
+  const id = process.env.WORLD_ID_APP_ID;
   //TODO: Remove api key
   const response = await fetch(
-    `https://developer.worldcoin.org/api/v1/verify/${process.env.WORLD_ID_APP_ID}`,
+    `https://developer.worldcoin.org/api/v1/verify/${id}`,
     {
       method: 'POST',
       headers: {
@@ -53,4 +53,4 @@ const verifyProof = async (proof: ISuccessResult, action: string) => {
     const { code, detail } = await response.json();
     throw new Error(`Error Code ${code}: ${detail}`);
   }
-};
+}
