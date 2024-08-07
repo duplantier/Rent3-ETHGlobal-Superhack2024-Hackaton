@@ -4,10 +4,13 @@ import "../styles/globals.css";
 import DarkModeToggle from "@/components/DarkModeToggle";
 import Link from "next/link";
 import { useDarkMode } from "@/contexts/DarkModeContext";
+import { Verify } from "@/app/verify";
+
 export default function App() {
   return (
     <main className="transition-all duration-300">
       <Navbar />
+      <Verify />
       <Hero />
     </main>
   );
