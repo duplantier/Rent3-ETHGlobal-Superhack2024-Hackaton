@@ -22,10 +22,11 @@ pragma solidity 0.8.24;
     function browseAVailableProperty () public view returns (OwnerProfile.propertyDetails[] memory) {
       
       }
-    function buyOrRentProperty () external blacklistingPass{}
 
-    function blacklistOwner() external blacklistingPass{}
-    function blacklistUser() external  {}
-    function pauseForEmergency() external {}
+    function buyOrRentProperty (uint _propertyID, address payable _ownerAddress, uint256 _propertyPrice) external blacklistingPass{ // @dev user must copy and paste owner address manually
+        OwnerProfile.propertyDetails storage good = propertyMapping[_propertyID];
+        (bool sent, ) = _ownerAddress.call{value: _propertyPrice}("");
+        
+      }
  }
  
