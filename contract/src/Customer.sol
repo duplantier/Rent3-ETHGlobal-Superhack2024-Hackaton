@@ -18,5 +18,6 @@ contract Customer{
         customerID : _customerID,
         name : _name
     });
+  }
      
 }
