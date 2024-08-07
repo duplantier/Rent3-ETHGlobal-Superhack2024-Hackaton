@@ -12,12 +12,17 @@ contract Customer{
 
   mapping(address => customerProfile) public customerMapping;
 
+  event newCustomer(string name, address indexed customerAddress, uint indexed id);
+
   function createCustomerProfile(string memory _name, address _customerAddress, uint256 _customerID) external {
     customerMapping[msg.sender] = customerProfile({
         customerAddress : _customerAddress,
         customerID : _customerID,
         name : _name
     });
+
+    
+    emit newCustomer (_name, _customerAddress, _customerID);
   }
      
 }

@@ -35,6 +35,10 @@ pragma solidity 0.8.24;
         _;
     }
 
+    event NewOwner(string name, address indexed ownerAddress, uint id);
+    event NewListing(string name, string description, uint price, uint id);
+    event removedListing(uint indexed id);
+
     function createOwnerProfile( string memory _name, uint _ownerID, address _ownerAddress) external onlyOwner(){
        require(!createdProfile, "you can't create more than one profile");
        ownerMapping[msg.sender] = ownerDetails({
@@ -45,10 +49,14 @@ pragma solidity 0.8.24;
        
        createdProfile = true;
 
+       emit NewOwner(_name, _ownerAddress, _ownerID);
+
     }
     function listProperty(string memory _name, string memory _description, uint256 _price, uint256 _propertyID) external onlyOwner {
        propertyMapping[propertyTracking] = propertyDetails(_name, _description, _price, _propertyID);
-       propertyTracking++; //@dev for the incrementation to be in place 
+       propertyTracking++; //@dev for the incrementation to be in place
+       
+       emit NewListing(_name, _description, _price, _propertyID);
     }
 
     function fetchAllListedProperty() public view returns (propertyDetails[] memory) {
@@ -69,6 +77,7 @@ pragma solidity 0.8.24;
     }
     function delistProperty(uint _IDOfPropertyToBeRemoved) external {
         delete propertyMapping[_IDOfPropertyToBeRemoved];
+        emit removedListing(_IDOfPropertyToBeRemoved);
     }
 
  }
