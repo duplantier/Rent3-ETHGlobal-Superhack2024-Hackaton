@@ -5,14 +5,27 @@ pragma solidity 0.8.24;
  import "src/Customer.sol";
  import "src/Owner.sol";
 
- contract Base{
+ contract Base {
     address private coreTeam;
 
-    function browseAVailableProperty () external {}
-    function buyOrRentProperty () external {}
+    mapping(address => bool) private blacklisted;
 
-    function blacklistOwner() external {}
-    function blacklistUser() external {}
+    constructor() {
+        coreTeam = msg.sender;
+    }
+
+    modifier blacklistingPass() {
+        require(!blacklisted[msg.sender], "error - you are blacklisted, contact support");
+        _;
+    }
+
+    function browseAVailableProperty () public view returns (OwnerProfile.propertyDetails[] memory) {
+      
+      }
+    function buyOrRentProperty () external blacklistingPass{}
+
+    function blacklistOwner() external blacklistingPass{}
+    function blacklistUser() external  {}
     function pauseForEmergency() external {}
  }
  
