@@ -1,7 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpException,
+} from '@nestjs/common';
 import { WorldIdService } from './world-id.service';
 import { CreateWorldIdDto } from './dto/create-world-id.dto';
 import { UpdateWorldIdDto } from './dto/update-world-id.dto';
+import { ISuccessResult } from '@worldcoin/idkit';
 
 @Controller('world-id')
 export class WorldIdController {
@@ -10,6 +20,12 @@ export class WorldIdController {
   @Post()
   create(@Body() createWorldIdDto: CreateWorldIdDto) {
     return this.worldIdService.create(createWorldIdDto);
+  }
+
+  @Post('/verify')
+  async verify(@Param('proof') proof: ISuccessResult) {
+    const verfiyRes = await this.worldIdService.verify(proof);
+    return verfiyRes;
   }
 
   @Get()

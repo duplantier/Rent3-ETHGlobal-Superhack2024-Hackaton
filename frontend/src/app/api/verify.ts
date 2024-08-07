@@ -1,6 +1,7 @@
 import { type IVerifyResponse, verifyCloudProof } from "@worldcoin/idkit";
 import { NextApiRequest, NextApiResponse } from "next";
 
+// TODO: DELETE THIS FILE
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -8,6 +9,7 @@ export default async function handler(
   const proof = req.body;
   const app_id = process.env.WORLD_APP_ID as `app_${string}`;
   const action = process.env.ACTION_ID || "";
+
   const verifyRes = (await verifyCloudProof(
     proof,
     app_id,
@@ -21,6 +23,7 @@ export default async function handler(
   } else {
     // This is where you should handle errors from the World ID /verify endpoint.
     // Usually these errors are due to a user having already verified.
+    console.log(verifyRes);
     res.status(400).send(verifyRes);
   }
 }
