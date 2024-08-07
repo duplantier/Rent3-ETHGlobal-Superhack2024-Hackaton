@@ -20,6 +20,15 @@ const config = {
       },
     },
     extend: {
+      colors: {
+        brand: {
+          primary: "#27F2CD",
+          secondary: "#178CA6",
+          light: "#79F2E6",
+          white: "#F2F0F2",
+          black: "#0D0D0D",
+        },
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

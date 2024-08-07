@@ -7,6 +7,6 @@
     @apply bg-red-500 text-red-500  border-2 border-yellow-500;
   }
   .hero-dark {
-    @apply dark:bg-gray-800 border-gray-900 border-2 text-gray-800 m-4;
+    @apply bg-gray-800 border-gray-900 border-2 text-gray-800 m-4;
   }
 }

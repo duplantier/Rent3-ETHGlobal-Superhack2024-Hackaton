@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "../styles/globals.css";
+import { DarkModeProvider } from "@/contexts/DarkModeContext";
 
 const poppins = Poppins({ weight: "400", style: "normal", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "App Name",
+  title: "House3",
   description: "App description",
 };
 
@@ -16,7 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={poppins.className}>{children}</body>
+      <body className={`${poppins.className} tracking-wide`}>
+        <DarkModeProvider>{children}</DarkModeProvider>
+      </body>
     </html>
   );
 }
