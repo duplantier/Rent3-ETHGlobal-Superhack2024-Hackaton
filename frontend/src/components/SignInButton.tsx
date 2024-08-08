@@ -16,7 +16,13 @@ const SignInButton = () => {
   const BACKEND_URI = process.env.NEXT_PUBLIC_BACKEND_URI;
   const ACTION_ID = "testing-action";
 
+  console.log("App_id: ", APP_ID);
+  console.log("Backend URI: ", BACKEND_URI);
+
   const handleVerify = async (proof: ISuccessResult) => {
+    console.log("Proof: ", proof);
+    console.log("handleVerify'a girdim");
+
     const res = await fetch(`${BACKEND_URI}/world-id/verify`, {
       // route to your backend will depend on implementation
       method: "POST",
@@ -30,20 +36,12 @@ const SignInButton = () => {
     }
   };
 
-  const onSuccess = () => {
-    // This is where you should perform any actions after the modal is closed
-    // Such as redirecting the user to a new page
-    // console.log("Verification successful");
-  };
-
-  useEffect(() => {
-    setOpen(true);
-  }, []);
+  const onSuccess = () => {};
 
   return (
     <IDKitWidget
-      app_id={APP_ID} // obtained from the Developer Portal
-      action={ACTION_ID} // obtained from the Developer Portal
+      app_id={"app_staging_cabc806110f5d7491c05482017dee619"} // obtained from the Developer Portal
+      action={"testing-action"} // obtained from the Developer Portal
       onSuccess={onSuccess} // callback when the modal is closed
       handleVerify={handleVerify} // callback when the proof is received
       verification_level={VerificationLevel.Device}
