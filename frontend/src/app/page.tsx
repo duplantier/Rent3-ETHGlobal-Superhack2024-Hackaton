@@ -4,13 +4,12 @@ import "../styles/globals.css";
 import DarkModeToggle from "@/components/DarkModeToggle";
 import Link from "next/link";
 import { useDarkMode } from "@/contexts/DarkModeContext";
-import { Verify } from "@/app/verify";
+import SignInButton from "@/components/SignInButton";
 
 export default function App() {
   return (
     <main className="transition-all duration-300">
       <Navbar />
-      <Verify />
       <Hero />
     </main>
   );
@@ -34,6 +33,7 @@ const Navbar: React.FC = () => {
       </div>
       <div className="flex justify-center items-center gap-4 font-semibold">
         <DarkModeToggle />
+        <SignInButton />
       </div>
     </section>
   );

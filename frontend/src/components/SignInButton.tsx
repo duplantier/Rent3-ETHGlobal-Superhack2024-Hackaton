@@ -1,18 +1,23 @@
 "use client";
-import { useDarkMode } from "@/contexts/DarkModeContext";
-import Image from "next/image";
-import React from "react";
-import { useRouter } from "next/navigation";
 import {
   IDKitWidget,
   VerificationLevel,
   ISuccessResult,
+  useIDKit,
 } from "@worldcoin/idkit";
+import { useEffect } from "react";
+/* import "dotenv/config"; */
+import Image from "next/image";
+import { useDarkMode } from "@/contexts/DarkModeContext";
 const SignInButton = () => {
   const { darkMode } = useDarkMode();
+  const { open, setOpen } = useIDKit();
+  const APP_ID = process.env.NEXT_PUBLIC_WORLD_APP_ID as `app_${string}`;
+  const BACKEND_URI = process.env.NEXT_PUBLIC_BACKEND_URI;
+  const ACTION_ID = "testing-action";
 
   const handleVerify = async (proof: ISuccessResult) => {
-    const res = await fetch("localhost:8080/verify", {
+    const res = await fetch(`${BACKEND_URI}/world-id/verify`, {
       // route to your backend will depend on implementation
       method: "POST",
       headers: {
@@ -28,18 +33,20 @@ const SignInButton = () => {
   const onSuccess = () => {
     // This is where you should perform any actions after the modal is closed
     // Such as redirecting the user to a new page
-    window.location.href = "/success";
+    // console.log("Verification successful");
   };
 
-  const WorldCoinAppId = process.env.WORLDCOIN_APP_ID;
+  useEffect(() => {
+    setOpen(true);
+  }, []);
 
   return (
     <IDKitWidget
-      app_id={`app_${WorldCoinAppId}`}
-      action="testing-action" // obtained from the Developer Portal
+      app_id={APP_ID} // obtained from the Developer Portal
+      action={ACTION_ID} // obtained from the Developer Portal
       onSuccess={onSuccess} // callback when the modal is closed
       handleVerify={handleVerify} // callback when the proof is received
-      verification_level={VerificationLevel.Orb}
+      verification_level={VerificationLevel.Device}
     >
       {({ open }) => (
         // This is the button that will open the IDKit modal
