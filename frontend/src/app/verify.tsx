@@ -11,10 +11,8 @@ import "dotenv/config";
 export function Verify() {
   const { open, setOpen } = useIDKit();
   const APP_ID = process.env.NEXT_PUBLIC_WORLD_APP_ID as `app_${string}`;
-  const BACKEND_URI = process.env.BACKEND_URI || "";
-  const ACTION_ID = "testing-action"; // process.env.ACTION_ID;
-
-  console.log(APP_ID);
+  const BACKEND_URI = process.env.NEXT_PUBLIC_BACKEND_URI;
+  const ACTION_ID = "test";
 
   const handleVerify = async (proof: ISuccessResult) => {
     const res = await fetch(`${BACKEND_URI}/world-id/verify`, {
@@ -33,7 +31,7 @@ export function Verify() {
   const onSuccess = () => {
     // This is where you should perform any actions after the modal is closed
     // Such as redirecting the user to a new page
-    console.log("Verification successful");
+    // console.log("Verification successful");
   };
 
   useEffect(() => {
