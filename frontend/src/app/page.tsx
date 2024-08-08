@@ -58,12 +58,14 @@ const Navbar: React.FC = () => {
         <Image
           src={`${darkMode ? `/logo-white.svg` : `/logo-black.svg`}`}
           alt="Logo"
+          className="w-12 h-auto"
           width={40}
           height={40}
         />
         <h1 className="tracking-tight font-black md:text-2xl lg:text-3xl">
           Apart3
         </h1>
+        <w3m-button />
       </div>
       <div className="flex justify-center items-center gap-4 font-semibold">
         {nullifierHash !== null ? (
