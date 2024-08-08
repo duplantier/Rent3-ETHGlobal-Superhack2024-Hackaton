@@ -11,7 +11,7 @@ export class WorldIdService {
   }
 
   async verify(proof: ISuccessResult) {
-    const action = 'test';
+    const action = process.env.ACTION_ID;
     const id = process.env.WORLD_ID_APP_ID;
     const response = await fetch(
       `https://developer.worldcoin.org/api/v1/verify/${id}`,
