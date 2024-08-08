@@ -11,9 +11,25 @@ export class WorldIdService {
   }
 
   async verify(proof: ISuccessResult) {
-    const action = 'testing-action';
-
-    return (await verifyProof(proof, action)) as IVerifyResponse;
+    const action = 'test';
+    const id = process.env.WORLD_ID_APP_ID;
+    const response = await fetch(
+      `https://developer.worldcoin.org/api/v1/verify/${id}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...proof, action }),
+      },
+    );
+    if (response.ok) {
+      const { verified } = await response.json();
+      return verified;
+    } else {
+      const { code, detail } = await response.json();
+      throw new Error(`Error Code ${code}: ${detail}`);
+    }
   }
 
   findAll() {
@@ -30,27 +46,5 @@ export class WorldIdService {
 
   remove(id: number) {
     return `This action removes a #${id} worldId`;
-  }
-}
-
-async function verifyProof(proof: ISuccessResult, action: string) {
-  const id = process.env.WORLD_ID_APP_ID;
-  //TODO: Remove api key
-  const response = await fetch(
-    `https://developer.worldcoin.org/api/v1/verify/${id}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ...proof, action }),
-    },
-  );
-  if (response.ok) {
-    const { verified } = await response.json();
-    return verified;
-  } else {
-    const { code, detail } = await response.json();
-    throw new Error(`Error Code ${code}: ${detail}`);
   }
 }

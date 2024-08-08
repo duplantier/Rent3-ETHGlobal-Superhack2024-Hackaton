@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  HttpException,
 } from '@nestjs/common';
 import { WorldIdService } from './world-id.service';
 import { CreateWorldIdDto } from './dto/create-world-id.dto';
@@ -23,9 +22,8 @@ export class WorldIdController {
   }
 
   @Post('/verify')
-  async verify(@Param('proof') proof: ISuccessResult) {
-    const verfiyRes = await this.worldIdService.verify(proof);
-    return verfiyRes;
+  async verify(@Body() data: ISuccessResult) {
+    return await this.worldIdService.verify(data);
   }
 
   @Get()
