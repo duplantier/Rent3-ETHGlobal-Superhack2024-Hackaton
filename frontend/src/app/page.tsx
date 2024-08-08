@@ -4,12 +4,17 @@ import "../styles/globals.css";
 import DarkModeToggle from "@/components/DarkModeToggle";
 import Link from "next/link";
 import { useDarkMode } from "@/contexts/DarkModeContext";
+<<<<<<< HEAD
 import SignInButton from "@/components/SignInButton";
+=======
+import { Verify } from "@/app/verify";
+>>>>>>> d81bf9969ebca07b55593702d2add926b30d73e7
 
 export default function App() {
   return (
     <main className="transition-all duration-300">
       <Navbar />
+      <Verify />
       <Hero />
     </main>
   );
