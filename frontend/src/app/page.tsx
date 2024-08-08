@@ -4,11 +4,7 @@ import "../styles/globals.css";
 import DarkModeToggle from "@/components/DarkModeToggle";
 import Link from "next/link";
 import { useDarkMode } from "@/contexts/DarkModeContext";
-<<<<<<< HEAD
-import SignInButton from "@/components/SignInButton";
-=======
 import { Verify } from "@/app/verify";
->>>>>>> d81bf9969ebca07b55593702d2add926b30d73e7
 
 export default function App() {
   return (
@@ -37,7 +33,6 @@ const Navbar: React.FC = () => {
         </h1>
       </div>
       <div className="flex justify-center items-center gap-4 font-semibold">
-        <SignInButton />
         <DarkModeToggle />
       </div>
     </section>
