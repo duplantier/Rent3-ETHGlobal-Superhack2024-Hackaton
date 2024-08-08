@@ -6,7 +6,7 @@ import { DarkModeProvider } from "@/contexts/DarkModeContext";
 const poppins = Poppins({ weight: "400", style: "normal", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "House3",
+  title: "Apart3",
   description: "App description",
 };
 
