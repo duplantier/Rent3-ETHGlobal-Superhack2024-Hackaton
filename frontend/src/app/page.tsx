@@ -25,24 +25,25 @@ const Navbar: React.FC = () => {
   const [isUserVerifiedWithWorldID, setIsUserVerifiedWithWorldID] =
     useState(false);
   const { darkMode } = useDarkMode();
-  const { open, setOpen } = useIDKit();
+  // const { open, setOpen } = useIDKit();
   const [nullifierHash, setNullifierHash] = useState<string | null>(null);
 
   const BACKEND_URI = process.env.NEXT_PUBLIC_BACKEND_URI;
-  // const APP_ID = process.env.NEXT_PUBLIC_WORLD_APP_ID as `app_${string}`;
-  // const ACTION_ID = "testing-action";
   const handleVerify = async (proof: ISuccessResult) => {
-    const res = await fetch(`${BACKEND_URI}/world-id/verify`, {
-      // route to your backend will depend on implementation
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(proof),
-    });
+    const worldIdVerifyResponse = await fetch(
+      `${BACKEND_URI}/world-id/verify`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(proof),
+      }
+    );
+
     setNullifierHash(proof.nullifier_hash);
 
-    if (!res.ok) {
+    if (!worldIdVerifyResponse.ok) {
       throw new Error("Verification failed."); // IDKit will display the error message to the user in the modal
     }
   };
@@ -111,24 +112,10 @@ const Navbar: React.FC = () => {
   );
 };
 
-{
-  /* <button className="px-4 py-2 transition-all duration-300 border-2 shadow-sm rounded-lg border-brand-primary text-brand-black bg-brand-primary  hover:border-brand-black dark:hover:border-brand-white"></button> */
-}
-/* const NavbarLink: React.FC<{ title: string; children: any }> = ({
-  title,
-  children,
-}) => {
-  return (
-    <Link className=" hover:underline font-bold" href={`/${title}`}>
-      {children}
-    </Link>
-  );
-}; */
-
 const Hero: React.FC = () => {
   return (
     <div className="min-h-[120vh] flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-800 text-black dark:text-white">
-      Here is my hero.
+      <h1>Rent with a crypto-based transparency and AI asssistance </h1>
     </div>
   );
 };
