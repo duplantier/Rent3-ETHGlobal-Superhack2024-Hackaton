@@ -9,15 +9,15 @@ const DarkModeToggle: React.FC = () => {
   return (
     <button
       onClick={toggleDarkMode}
-      className="px-3 py-2 border-2 shadow-sm hover:bg-gray-100 hover:border-brand-black dark:hover:border-brand-white dark:hover:bg-gray-700/45 dark:border-gray-700 dark:bg-gray-800 text-brand-black dark:text-white rounded-lg "
+      className="p-3  hover:bg-slate-100 hover:border-brand-black dark:hover:border-brand-white dark:hover:bg-slate-700/45 dark:border-slate-700  text-brand-black dark:text-white rounded-lg "
     >
       {darkMode ? (
         <span className="flex items-center ">
-          <Sun size={20} />
+          <Sun size={16} />
         </span>
       ) : (
         <span className="flex items-center ">
-          <Moon size={20} />
+          <Moon size={16} />
         </span>
       )}
     </button>

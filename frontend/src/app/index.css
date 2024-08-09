@@ -10,3 +10,12 @@
     @apply bg-gray-800 border-gray-900 border-2 text-gray-800 m-4;
   }
 }
+.no-visible-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.no-visible-scrollbar::-webkit-scrollbar {
+  display: none;
+}

@@ -10,7 +10,7 @@ import { headers } from "next/headers";
 const poppins = Poppins({ weight: "400", style: "normal", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Apart3",
+  title: "Rent3",
   description: "App description",
 };
 
