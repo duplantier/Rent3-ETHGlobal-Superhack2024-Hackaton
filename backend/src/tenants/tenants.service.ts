@@ -14,7 +14,7 @@ export class TenantsService {
   }
 
   findOne(id: number) {
-    return this.databaseService.tenant.findUnique({ where: { id } });
+    return this.databaseService.tenant.findUniqueOrThrow({ where: { id } });
   }
 
   update(id: number, updateTenantDto: Prisma.TenantUpdateInput) {

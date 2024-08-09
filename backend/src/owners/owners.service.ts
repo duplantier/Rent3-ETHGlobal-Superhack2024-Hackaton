@@ -14,7 +14,9 @@ export class OwnersService {
   }
 
   findOne(id: number) {
-    return this.databaseService.propertyOwner.findUnique({ where: { id } });
+    return this.databaseService.propertyOwner.findUniqueOrThrow({
+      where: { id },
+    });
   }
 
   update(id: number, updateOwnerDto: Prisma.PropertyOwnerUpdateInput) {
