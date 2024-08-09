@@ -25,6 +25,7 @@
     "@nestjs/core": "^10.3.10",
     "@nestjs/mapped-types": "^2.0.5",
     "@nestjs/platform-express": "^10.3.10",
+    "@prisma/client": "5.18.0",
     "@worldcoin/idkit": "^1.2.2",
     "dotenv": "^16.4.5",
     "prisma": "^5.18.0",
