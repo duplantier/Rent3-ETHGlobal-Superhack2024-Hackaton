@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -32,6 +33,7 @@ const formSchema = z.object({
 const OnboardingForm = () => {
   const [userOnboardingRole, setUserOnboardingRole] = useState<string | null>();
   const { open, setOpen: openWorldIDVerificationModal } = useIDKit();
+  const router = useRouter();
   const onboardingForm = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,48 +52,67 @@ const OnboardingForm = () => {
     } else {
       null;
     }
-    console.log(values);
-    console.log("userOnboardingRole", userOnboardingRole);
   }
 
   //! Worldcoin Things
-  const [isUserVerifiedWithWorldID, setIsUserVerifiedWithWorldID] =
-    useState(false);
-  const { darkMode } = useDarkMode();
-
   const [onboardingNullifierHash, setOnboardingNullifierHash] = useState<
     string | null
   >(null);
 
   const BACKEND_URI = process.env.NEXT_PUBLIC_BACKEND_URI;
   const handleVerify = async (proof: ISuccessResult) => {
-    const worldIdVerifyResponse = await fetch(
-      `${BACKEND_URI}/world-id/verify`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(proof),
-      }
-    );
-
+    const worldIdVerifyResponse = await fetch(`${BACKEND_URI}world-id/verify`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(proof),
+    });
     setOnboardingNullifierHash(proof.nullifier_hash);
-
     if (!worldIdVerifyResponse.ok) {
       throw new Error("Verification failed."); // IDKit will display the error message to the user in the modal
     }
   };
 
-  const onSuccess = (result: ISuccessResult) => {
-    console.log("onSuccess'a girdim");
-    console.log("nullifierHash", result.nullifier_hash);
+  const onSuccess = async (result: ISuccessResult) => {
+    const userOnboardingData = {
+      name: onboardingForm.getValues("fullName"),
+      email: onboardingForm.getValues("email"),
+      nullifierHash: result.nullifier_hash,
+      walletAddress: "",
+    };
+
+    try {
+      const createOwnerResponse = await fetch(
+        `${BACKEND_URI}${userOnboardingRole}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userOnboardingData),
+        }
+      );
+
+      const createOwnerData = await createOwnerResponse.json();
+      if (createOwnerResponse.ok) {
+        if (userOnboardingRole === "owners") {
+          router.push("/dashboard/owner");
+        } else if (userOnboardingRole === "tenants") {
+          router.push("/dashboard/tenant");
+        }
+      } else {
+        throw new Error(createOwnerData.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <div className="max-w-[500px] p-8 bg-gray-50 rounded-xl border">
       <Form {...onboardingForm}>
         <h1 className="text-3xl dark:text-brand-white font-bold">
-          Get Started with Rent<span className="text-brand-primary">3</span>
+          Get Started with Rent3
         </h1>
         <p className="text-slate-600 dark:text-slate-300">
           Let us know what you are looking for and we will help you find the
@@ -99,9 +120,9 @@ const OnboardingForm = () => {
         </p>
         <section className="flex justify-center items-center gap-4 py-4">
           <button
-            onClick={() => setUserOnboardingRole("propertyOwner")}
+            onClick={() => setUserOnboardingRole("owners")}
             className={`${
-              userOnboardingRole == "propertyOwner"
+              userOnboardingRole == "owners"
                 ? "bg-cyan-300 border-cyan-800 w-2/3"
                 : "w-1/2 hover:border-cyan-500 hover:bg-cyan-200"
             } h-full flex flex-col justify-center items-center gap-2 p-4 border-2 border-cyan-200   hover:cursor-pointer bg-cyan-100   transition-all duration-300 text-cyan-700 rounded-lg`}
@@ -113,9 +134,9 @@ const OnboardingForm = () => {
             </p>
           </button>
           <button
-            onClick={() => setUserOnboardingRole("tenant")}
+            onClick={() => setUserOnboardingRole("tenants")}
             className={`${
-              userOnboardingRole == "tenant"
+              userOnboardingRole == "tenants"
                 ? "bg-purple-300 border-purple-800 w-2/3"
                 : "w-1/2 hover:border-purple-500 hover:bg-purple-200"
             } h-full flex flex-col justify-center items-center gap-2 p-4 border-2 border-purple-200  hover:cursor-pointer bg-purple-100  transition-all duration-300 text-purple-700 rounded-lg`}
@@ -197,7 +218,7 @@ const OnboardingForm = () => {
                       width={20}
                       height={40}
                     />
-                    <h1>Verify & Sign In With WorldID</h1>
+                    <h1>Verify & Sign Up With WorldID</h1>
                   </button>
                 )}
               </IDKitWidget>
