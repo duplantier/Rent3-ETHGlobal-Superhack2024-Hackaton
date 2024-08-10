@@ -14,15 +14,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  IDKitWidget,
-  VerificationLevel,
-  ISuccessResult,
-  useIDKit,
-} from "@worldcoin/idkit";
 
 import { Input } from "@/components/ui/input";
-import { useDarkMode } from "@/contexts/DarkModeContext";
 import Image from "next/image";
 
 const formSchema = z.object({
@@ -30,9 +23,15 @@ const formSchema = z.object({
   email: z.string().email(),
 });
 
-const OnboardingForm = () => {
-  const [userOnboardingRole, setUserOnboardingRole] = useState<string | null>();
-  const { open, setOpen: openWorldIDVerificationModal } = useIDKit();
+const OnboardingForm = ({
+  userNullifierHash,
+}: {
+  userNullifierHash: string;
+}) => {
+  const [userOnboardingRole, setUserOnboardingRole] = useState<string | null>(
+    ""
+  );
+  const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
   const router = useRouter();
   const onboardingForm = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,44 +40,14 @@ const OnboardingForm = () => {
       email: "",
     },
   });
+  const BACKEND_URI = "https://rent3-backend.onrender.com/";
 
-  function onSubmitOnboardingForm(values: z.infer<typeof formSchema>) {
-    if (
-      userOnboardingRole !== null &&
-      values.email !== "" &&
-      values.fullName !== ""
-    ) {
-      openWorldIDVerificationModal(true);
-    } else {
-      null;
-    }
-  }
-
-  //! Worldcoin Things
-  const [onboardingNullifierHash, setOnboardingNullifierHash] = useState<
-    string | null
-  >(null);
-
-  const BACKEND_URI = process.env.NEXT_PUBLIC_BACKEND_URI;
-  const handleVerify = async (proof: ISuccessResult) => {
-    const worldIdVerifyResponse = await fetch(`${BACKEND_URI}world-id/verify`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(proof),
-    });
-    setOnboardingNullifierHash(proof.nullifier_hash);
-    if (!worldIdVerifyResponse.ok) {
-      throw new Error("Verification failed."); // IDKit will display the error message to the user in the modal
-    }
-  };
-
-  const onSuccess = async (result: ISuccessResult) => {
+  async function onSubmitOnboardingForm(values: z.infer<typeof formSchema>) {
+    setIsFormLoading(true);
     const userOnboardingData = {
-      name: onboardingForm.getValues("fullName"),
-      email: onboardingForm.getValues("email"),
-      nullifierHash: result.nullifier_hash,
+      name: values.fullName,
+      email: values.email,
+      nullifierHash: userNullifierHash,
       walletAddress: "",
     };
 
@@ -107,16 +76,16 @@ const OnboardingForm = () => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }
+
   return (
-    <div className="max-w-[500px] p-8 bg-gray-50 rounded-xl border">
+    <div className="max-w-[500px] z-50 p-8 bg-gray-50 dark:bg-gray-900 rounded-xl border dark:border-gray-700">
       <Form {...onboardingForm}>
         <h1 className="text-3xl dark:text-brand-white font-bold">
           Get Started with Rent3
         </h1>
         <p className="text-slate-600 dark:text-slate-300">
-          Let us know what you are looking for and we will help you find the
-          best match.
+          Let us know what you are looking for and we will help you get started.
         </p>
         <section className="flex justify-center items-center gap-4 py-4">
           <button
@@ -158,10 +127,12 @@ const OnboardingForm = () => {
               name="fullName"
               render={({ field }) => (
                 <FormItem className="w-1/2">
-                  <FormLabel>Full Name*</FormLabel>
+                  <FormLabel className="dark:text-brand-white">
+                    Full Name*
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      className="border-2"
+                      className="border-2 dark:border-gray-500 dark:text-gray-50"
                       placeholder="Your full name"
                       {...field}
                     />
@@ -175,10 +146,12 @@ const OnboardingForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem className="w-1/2">
-                  <FormLabel>Email*</FormLabel>
+                  <FormLabel className="dark:text-brand-white">
+                    Email*
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      className="border-2"
+                      className="border-2 dark:border-gray-500 dark:text-gray-50"
                       placeholder="Your email"
                       {...field}
                     />
@@ -188,51 +161,20 @@ const OnboardingForm = () => {
               )}
             />
           </section>
-          {onboardingNullifierHash !== null ? (
-            <button className="px-4 py-2 flex gap-2 justify-center items-center border-2 rounded-lg shadow-sm hover:bg-slate-100 hover:border-brand-black dark:border-slate-700 dark:bg-slate-800 dark:hover:border-brand-white">
-              ✅
-              <h1>
-                {onboardingNullifierHash.slice(0, 6)}...
-                {onboardingNullifierHash.slice(-6)}
-              </h1>
+
+          <div className="w-full flex justify-center items-center">
+            <button
+              disabled={
+                onboardingForm.getValues("email") === "" ||
+                onboardingForm.getValues("fullName") === "" ||
+                userOnboardingRole === ""
+              }
+              className="w-[300px]  px-4 py-[5px] disabled:border-red-900 disabled:text-red-800 dark:disabled:hover:border-red-950 dark:disabled:border-red-900 dark:disabled:text-red-800 disabled:hover:border-red-950  disabled:hover:cursor-not-allowed flex gap-2 justify-center items-center border-2 rounded-lg shadow-sm bg-gray-900 border-brand-primary  dark:hover:bg-gray-950  text-gray-50 dark:text-slate-300 dark:hover:text-brand-primary dark:hover:border-brand-primary hover:text-brand-primary"
+              type="submit"
+            >
+              {isFormLoading ? "Loading..." : "Save"}
             </button>
-          ) : (
-            <div>
-              <IDKitWidget
-                app_id={"app_staging_cabc806110f5d7491c05482017dee619"}
-                action={"testing-action"}
-                onSuccess={onSuccess}
-                handleVerify={handleVerify}
-                verification_level={VerificationLevel.Device}
-              >
-                {({ open }) => (
-                  // This is the button that will open the IDKit modal
-                  <button
-                    className="px-4 py-[6px] w-[80%] mx-auto flex gap-2 justify-center items-center border-2 bg-gray-900 border-gray-400 hover:border-brand-primary  dark:hover:bg-gray-950  text-gray-50 dark:text-slate-300 dark:hover:text-brand-white dark:hover:border-brand-primary hover:text-brand-primary rounded-lg shadow-sm   dark:border-slate-700 dark:bg-slate-800 "
-                    type="submit"
-                  >
-                    <Image
-                      src={`/logos/worldcoin-white.svg`}
-                      alt="Logo"
-                      className="w-6 h-auto"
-                      width={20}
-                      height={40}
-                    />
-                    <h1>Verify & Sign Up With WorldID</h1>
-                  </button>
-                )}
-              </IDKitWidget>
-            </div>
-          )}
-          {/* <div className="w-full flex justify-center items-center">
-          <button
-            disabled={onboardingNullifierHash === null}
-            className="w-[50%] border-2 rounded-lg border-gray-500 py-1 hover:cursor-pointer"
-            type="submit"
-          >
-            Sign In
-          </button>
-        </div> */}
+          </div>
         </form>
       </Form>
     </div>

@@ -45,7 +45,7 @@ export const Tabs = ({
     <>
       <div
         className={cn(
-          "min-h-[10vh] border-[1px]  rounded-lg bg-brand-white/25 dark:bg-brand-black/30 dark:border-gray-700  backdrop-blur-md   transition-all duration-300 w-[50%] mx-auto fixed flex items-center justify-between px-12 z-50  text-slate-900 dark:text-slate-100 [perspective:1000px]  overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full ",
+          "min-h-[10vh] border-[1px]  rounded-lg bg-brand-white/25 dark:bg-brand-black/30 dark:border-gray-700  backdrop-blur-md   transition-all duration-300 w-[50%] mx-auto fixed flex items-center justify-between px-12 z-10  text-slate-900 dark:text-slate-100 [perspective:1000px]  overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full ",
           containerClassName
         )}
       >

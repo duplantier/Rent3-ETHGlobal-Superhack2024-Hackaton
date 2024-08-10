@@ -6,7 +6,6 @@ import { config } from "@/config";
 import Web3ModalProvider from "@/contexts";
 import { cookieToInitialState } from "wagmi";
 import { headers } from "next/headers";
-
 const poppins = Poppins({ weight: "400", style: "normal", subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -24,11 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className} tracking-wide`}>
-        <DarkModeProvider>
-          <Web3ModalProvider initialState={initialState}>
-            {children}
-          </Web3ModalProvider>
-        </DarkModeProvider>
+          <DarkModeProvider>
+            <Web3ModalProvider initialState={initialState}>
+              {children}
+            </Web3ModalProvider>
+          </DarkModeProvider>
       </body>
     </html>
   );
