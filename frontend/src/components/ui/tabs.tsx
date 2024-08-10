@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import DarkModeToggle from "../DarkModeToggle";
 import { useDarkMode } from "@/contexts/DarkModeContext";
+import Link from "next/link";
 
 type Tab = {
   title: string;
@@ -48,7 +49,7 @@ export const Tabs = ({
           containerClassName
         )}
       >
-        <div className="flex justify-center items-center gap-2">
+        <Link href="/" className="flex justify-center items-center gap-2">
           <Image
             src={`${darkMode ? `/logo-white.svg` : `/logo-black.svg`}`}
             alt="Logo"
@@ -59,7 +60,7 @@ export const Tabs = ({
           <h1 className="tracking-tight font-black md:text-2xl lg:text-3xl">
             Rent3
           </h1>
-        </div>
+        </Link>
         <div className="flex justify-center items-center gap-4 font-semibold">
           {propTabs.map((tab, idx) => (
             <button

@@ -1,6 +1,6 @@
+import Link from "next/link";
 import { Cover } from "../ui/cover";
 import { Spotlight } from "../ui/spotlight";
-import { GetStartedButton } from "./GetStartedButton";
 
 export const Hero: React.FC = () => {
   return (
@@ -21,7 +21,12 @@ export const Hero: React.FC = () => {
           transparent rental experience, leveraging Base, Blockscout, and
           Worldcoin. Deployed on Mode.
         </p>
-        <GetStartedButton />
+        <Link
+          href="/get-started"
+          className="w-[300px] mt-8 px-4 py-2 flex gap-2 justify-center items-center border-2 rounded-lg shadow-sm bg-gray-900 border-gray-400 hover:border-brand-primary  dark:hover:bg-gray-950  text-gray-50 dark:text-slate-300 dark:hover:text-brand-white dark:hover:border-brand-primary hover:text-brand-primary"
+        >
+          Get Started
+        </Link>
       </div>
     </div>
   );
