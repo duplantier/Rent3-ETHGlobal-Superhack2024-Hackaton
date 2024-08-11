@@ -125,7 +125,6 @@ const OwnerPage = () => {
   }
 
   const BACKEND_URI = "https://rent3-backend.onrender.com/";
-  const { open, close } = useWeb3Modal();
   const { address: userWalletAddress, isConnected } = useAccount();
   const [warning, setWarning] = useState("");
   const [isCreatingProperty, setIsCreatingProperty] = useState(false);
@@ -146,6 +145,7 @@ const OwnerPage = () => {
       rentalPrice: 346.34,
     },
   });
+
   async function onSubmitaddNewPropertyForm(
     values: z.infer<typeof addNewPropertyFormSchema>
   ) {
