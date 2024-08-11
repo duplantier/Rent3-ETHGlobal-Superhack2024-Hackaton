@@ -7,7 +7,6 @@ import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -130,7 +129,6 @@ const OwnerPage = () => {
   const { address: userWalletAddress, isConnected } = useAccount();
   const [warning, setWarning] = useState("");
   const [isCreatingProperty, setIsCreatingProperty] = useState(false);
-  const router = useRouter();
   const addNewPropertyForm = useForm<z.infer<typeof addNewPropertyFormSchema>>({
     resolver: zodResolver(addNewPropertyFormSchema),
     defaultValues: {
