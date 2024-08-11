@@ -208,7 +208,7 @@ const OwnerPage = () => {
     if (ownerProperties.length === 0) {
       fetchProperties();
     }
-  }, [ownerProperties]);
+  }, []);
   return (
     <main className="min-h-[100vh] overflow-y-scoll py-12 w-full bg-brand-white dark:bg-brand-black  flex flex-col justify-center items-center bg-dot-black/[0.5] dark:bg-dot-white/[0.1] relative ">
       <Spotlight
