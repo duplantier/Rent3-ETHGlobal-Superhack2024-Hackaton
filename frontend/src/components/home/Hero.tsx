@@ -132,7 +132,7 @@ export const Hero: React.FC = () => {
         userNullifierHash == null ||
         userRole == null ? (
           <IDKitWidget
-            app_id={"app_staging_cabc806110f5d7491c05482017dee619"}
+            app_id={"app_0051cd8ff63274ad5395b7a7742c4d70"}
             action={"testing-action"}
             onSuccess={onSuccess}
             handleVerify={handleVerify}
