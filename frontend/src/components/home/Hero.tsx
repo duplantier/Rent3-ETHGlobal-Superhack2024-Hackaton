@@ -61,6 +61,7 @@ export const Hero: React.FC = () => {
 
   const BACKEND_URI = process.env.NEXT_PUBLIC_BACKEND_URI;
   const handleVerify = async (proof: ISuccessResult) => {
+    localStorage.removeItem("nullifier_hash");
     const worldIdVerifyResponse = await fetch(`${BACKEND_URI}world-id/verify`, {
       method: "POST",
       headers: {
@@ -75,30 +76,40 @@ export const Hero: React.FC = () => {
   };
 
   const onSuccess = async (result: ISuccessResult) => {
-    // Add nullifier_hash to localStorage
     setItemWithExpiry({
       key: "nullifier_hash",
       value: onboardingNullifierHash,
       ttl: 5000 * 60 * 60,
     });
 
-    // eğer bu nullifier_hash ile bir kullanıcı varsa, direkt dashboard'a yönlendir.
-    // Yoksa detaylatını seçip kullanıcı hesabını oluşturması için get-started'a yönlendir.
-
-    const isUserExistResponse = await fetch(
-      `${BACKEND_URI}nullifierHash/${onboardingNullifierHash}`,
+    const isOwnerExist: any = await fetch(
+      `${BACKEND_URI}owners/${onboardingNullifierHash}`,
       {
-        method: "POST",
+        method: "GET",
         headers: {
-          "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify({ nullifier_hash: onboardingNullifierHash }),
       }
     );
 
-    console.log("isUserExist", isUserExistResponse);
+    const isTenantExist: any = await fetch(
+      `${BACKEND_URI}tenants/${onboardingNullifierHash}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    );
 
-    router.push("/get-started");
+    if (isOwnerExist.id || isTenantExist.id) {
+      console.log("user exist. Redirecting to the dashboard.");
+      console.log("isOwnerExist", isOwnerExist);
+      console.log("isTenantExist", isTenantExist);
+    } else {
+      console.log("user does not exist. Redirecting to the get started page");
+      router.push("/get-started");
+    }
   };
   return (
     <div className="min-h-[100vh] w-full flex md:items-center md:justify-center bg-brand-white dark:bg-brand-black  antialiased bg-grid-black/[0.09] dark:bg-grid-white/[0.09] relative overflow-hidden">

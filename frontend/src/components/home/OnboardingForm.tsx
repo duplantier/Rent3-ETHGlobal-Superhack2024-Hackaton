@@ -60,15 +60,15 @@ const OnboardingForm = ({
       email: "",
     },
   });
-  const BACKEND_URI = "https://rent3-backend.onrender.com/";
 
+  const BACKEND_URI = "https://rent3-backend.onrender.com/";
   async function onSubmitOnboardingForm(values: z.infer<typeof formSchema>) {
     setIsFormLoading(true);
     const userOnboardingData = {
       name: values.fullName,
       email: values.email,
       nullifierHash: userNullifierHash,
-      walletAddress: "",
+      walletAddress: `${values.fullName}-${values.email}-${userNullifierHash}`,
     };
 
     try {

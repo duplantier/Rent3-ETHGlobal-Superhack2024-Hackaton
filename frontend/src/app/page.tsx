@@ -56,7 +56,7 @@ export default function App() {
       title: "Explore",
       value: "explore",
       content: (
-        <main className="h-auto py-60 overflow-y-scroll w-full bg-brand-white dark:bg-brand-black  flex flex-col justify-center items-center bg-dot-black/[0.5] dark:bg-dot-white/[0.4] relative overflow-hidden">
+        <main className="min-h-[100vh] py-36 overflow-y-scroll w-full bg-brand-white dark:bg-brand-black  flex flex-col justify-center items-center bg-dot-black/[0.5] dark:bg-dot-white/[0.4] relative overflow-hidden">
           <Spotlight
             className="-top-40 left-0 md:left-0 md:-bottom-80"
             fill="#27F2CD"
@@ -85,7 +85,7 @@ export default function App() {
                   rentalPrice: number;
                 }) => (
                   <Dialog key={property.id}>
-                    <DialogTrigger className="w-[300px] h-auto py-6 mx-auto flex flex-col justify-center items-center dark:text-brand-white text-brand-black border border-gray-700 dark:border-gray-200 px-2 my-4 rounded-lg">
+                    <DialogTrigger className="w-[300px] bg-gray-50 dark:bg-gray-900 dark:border-gray-700 h-auto py-6 mx-auto flex flex-col justify-center items-center dark:text-brand-white text-brand-black border border-gray-700 px-2 my-4 rounded-lg">
                       <Image
                         src={property.images[0]}
                         alt="Property Image"
@@ -97,7 +97,7 @@ export default function App() {
                         <h2 className="mt-4 font-bold text-xl">
                           {property.city} ({property.country})
                         </h2>
-                        <h3>0.{property.rentalPrice} ETH</h3>
+                        <h3>{property.rentalPrice}</h3>
                       </div>
                       <button className="w-[80%] mx-auto mt-4  px-4 py-2 flex gap-2 justify-center items-center border-2 rounded-lg shadow-sm bg-gray-900 border-gray-400 hover:border-brand-primary  dark:hover:bg-gray-950  text-gray-50 dark:text-slate-300 dark:hover:text-brand-white dark:hover:border-brand-primary hover:text-brand-primary">
                         Details
@@ -154,8 +154,11 @@ export default function App() {
 
                             <p>
                               <span className="font-bold">Rental Price:</span>{" "}
-                              0.{property.rentalPrice} ETH
+                              {property.rentalPrice}
                             </p>
+                            <button className="w-[80%] mx-auto mt-4  px-4 py-2 flex gap-2 justify-center items-center border-2 rounded-lg shadow-sm bg-gray-900 border-gray-400 hover:border-brand-primary  dark:hover:bg-gray-950  text-gray-50 dark:text-slate-300 dark:hover:text-brand-white dark:hover:border-brand-primary hover:text-brand-primary">
+                              Rent Now
+                            </button>
                           </div>
                         </DialogDescription>
                       </DialogHeader>

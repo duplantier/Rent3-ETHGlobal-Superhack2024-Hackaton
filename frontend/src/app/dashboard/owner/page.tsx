@@ -33,6 +33,8 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { Check, Cross, Minus, Plus, X } from "lucide-react";
 import { ExpandableCard } from "@/components/ui/expendable-card";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useAccount } from "wagmi";
 function getItemWithExpiry({ key }: { key: string }) {
   const itemStr = localStorage.getItem(key);
 
@@ -63,20 +65,20 @@ const addNewPropertyFormSchema = z.object({
   img2Link: z.string().min(2).max(500),
   img3Link: z.string().min(2).max(500),
   img4Link: z.string().min(2).max(500),
-  rentalPrice: z.number().min(1).max(10000),
+  rentalPrice: z.coerce.number().min(1).max(10000),
 });
 
 const OwnerPage = () => {
-  const [propertyType, setPropertyType] = useState("");
-  const [propertyBedrooms, setPropertyBedrooms] = useState(1);
-  const [propertyBathrooms, setPropertyBathrooms] = useState(1);
+  const [propertyType, setPropertyType] = useState("HOUSE");
+  const [propertyBedrooms, setPropertyBedrooms] = useState(2);
+  const [propertyBathrooms, setPropertyBathrooms] = useState(2);
   const [propertyFurnished, setPropertyFurnished] = useState(false);
-  const [propertyFloorSizeSqm, setPropertyFloorSizeSqm] = useState(10);
+  const [propertyFloorSizeSqm, setPropertyFloorSizeSqm] = useState(64);
   const [ownerProperties, setOwnerProperties] = useState([]);
   const userNullifierHash = getItemWithExpiry({ key: "nullifier_hash" });
   const { darkMode } = useDarkMode();
   const userRole = getItemWithExpiry({ key: "userRole" });
-  /*  if (
+  if (
     userNullifierHash == "" ||
     userNullifierHash == null ||
     userRole != "owners"
@@ -121,29 +123,74 @@ const OwnerPage = () => {
         </Link>
       </main>
     );
-  } */
+  }
 
   const BACKEND_URI = "https://rent3-backend.onrender.com/";
-
+  const { open, close } = useWeb3Modal();
+  const { address: userWalletAddress, isConnected } = useAccount();
+  const [warning, setWarning] = useState("");
+  const [isCreatingProperty, setIsCreatingProperty] = useState(false);
   const router = useRouter();
   const addNewPropertyForm = useForm<z.infer<typeof addNewPropertyFormSchema>>({
     resolver: zodResolver(addNewPropertyFormSchema),
     defaultValues: {
-      country: "",
-      city: "",
-      address: "",
-      neighborhood: "",
-      description: "",
-      img1Link: "",
-      img2Link: "",
-      img3Link: "",
-      img4Link: "",
-      rentalPrice: 1,
+      country: "Türkiye",
+      city: "Ankara",
+      address: "ODTÜ 9. Yurt",
+      neighborhood: "Üniversiteler",
+      description:
+        "A campus dormitory room in Middle East Technical University.",
+      img1Link:
+        "https://loremflickr.com/640/480/house?lock=8303602189729792      ",
+      img2Link: "https://loremflickr.com/640/480/house?lock=2905853233463296",
+      img3Link: "https://loremflickr.com/640/480/house?lock=3763918895841280",
+      img4Link: "https://loremflickr.com/640/480/house?lock=6979252633206784",
+      rentalPrice: 346.34,
     },
   });
   async function onSubmitaddNewPropertyForm(
     values: z.infer<typeof addNewPropertyFormSchema>
-  ) {}
+  ) {
+    setIsCreatingProperty(true);
+    const incomingImages = [
+      values.img1Link,
+      values.img2Link,
+      values.img3Link,
+      values.img4Link,
+    ];
+
+    const createNewProperty: any = await fetch(`${BACKEND_URI}property`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        data: {
+          ownerAddress: userWalletAddress,
+          country: values.country,
+          city: values.city,
+          address: values.address,
+          neighborhood: values.neighborhood,
+          type: propertyType,
+          bedrooms: propertyBedrooms,
+          bathrooms: propertyBathrooms,
+          furnished: propertyFurnished,
+          floorSizeSqm: propertyFloorSizeSqm,
+          description: values.description,
+          images: incomingImages,
+          rentalPrice: values.rentalPrice,
+        },
+      }),
+    });
+
+    if (createNewProperty.id) {
+      setIsCreatingProperty(false);
+      setWarning("Property added successfully");
+      addNewPropertyForm.reset();
+    } else {
+      setWarning("Failed to add property");
+    }
+  }
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -213,7 +260,7 @@ const OwnerPage = () => {
           <div className="w-full h-max-[400px] overflow-y-scroll"></div>
         </section>
         <section
-          className="w-1/2 dark:bg-gray-900 border-2 dark:border-gray-700 flex flex-col  px-4 py-6 rounded-lg"
+          className="w-1/2 bg-gray-50 dark:bg-gray-900 border-2 dark:border-gray-700 flex flex-col  px-4 py-6 rounded-lg"
           id="addNewPropertyForm"
         >
           <div className="w-full max-h-[400px] overflow-y-scroll z-50 p-8 bg-gray-50 dark:bg-gray-900 rounded-xl  dark:border-gray-700">
@@ -386,36 +433,35 @@ const OwnerPage = () => {
                   </div>
 
                   <div className="flex justify-center items-center w-full gap-8">
-                    <div className="flex flex-col gap-2 w-1/2 ">
-                      <h5 className="text-sm ">Bathrooms*</h5>
+                    <div className="flex flex-col gap-2 w-1/2">
+                      <h5 className="text-sm ">Floor Size Sqm*</h5>
                       <div className="flex justify-center lg:justify-start items-center gap-x-4 lg:gap-x-1.5">
                         <button
-                          aria-label="Decrease Property Bathrooms"
+                          aria-label="Decrease Floor Size Sqm"
                           type="button"
                           className="size-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
                           disabled={propertyBathrooms === 0}
                           onClick={() =>
-                            setPropertyBathrooms(propertyBathrooms - 1)
+                            setPropertyFloorSizeSqm(propertyFloorSizeSqm - 10)
                           }
                         >
                           <Minus />
                         </button>
                         <p className="p-0 w-6 bg-transparent border-0 text-gray-800 text-center focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none dark:text-white">
-                          {propertyBathrooms}
+                          {propertyFloorSizeSqm}
                         </p>
                         <button
-                          aria-label="Increase Property Bathrooms"
+                          aria-label="Increase Floor Size Sqm"
                           type="button"
                           className="size-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
                           onClick={() =>
-                            setPropertyBathrooms(propertyBathrooms + 1)
+                            setPropertyFloorSizeSqm(propertyFloorSizeSqm + 10)
                           }
                         >
                           <Plus />
                         </button>
                       </div>
                     </div>
-
                     <div className="flex flex-col gap-2 w-1/2 ">
                       <h5 className="text-sm ">Bathrooms*</h5>
                       <div className="flex justify-center lg:justify-start items-center gap-x-4 lg:gap-x-1.5">
@@ -466,36 +512,6 @@ const OwnerPage = () => {
                           }
                         >
                           {propertyFurnished ? <Check /> : <X />}
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-2 w-1/2">
-                      <h5 className="text-sm ">Floor Size Sqm*</h5>
-                      <div className="flex justify-center lg:justify-start items-center gap-x-4 lg:gap-x-1.5">
-                        <button
-                          aria-label="Decrease Floor Size Sqm"
-                          type="button"
-                          className="size-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
-                          disabled={propertyBathrooms === 0}
-                          onClick={() =>
-                            setPropertyFloorSizeSqm(propertyFloorSizeSqm - 10)
-                          }
-                        >
-                          <Minus />
-                        </button>
-                        <p className="p-0 w-6 bg-transparent border-0 text-gray-800 text-center focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none dark:text-white">
-                          {propertyFloorSizeSqm}
-                        </p>
-                        <button
-                          aria-label="Increase Floor Size Sqm"
-                          type="button"
-                          className="size-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
-                          onClick={() =>
-                            setPropertyBathrooms(propertyBathrooms + 10)
-                          }
-                        >
-                          <Plus />
                         </button>
                       </div>
                     </div>
@@ -621,16 +637,20 @@ const OwnerPage = () => {
                   />
                 </section>
 
-                <div className="w-full flex justify-center items-center">
-                  <button
-                    /* disabled={
-                     
-                    } */
-                    className="w-[300px]  px-4 py-[5px] disabled:border-red-900 disabled:text-red-800 dark:disabled:hover:border-red-950 dark:disabled:border-red-900 dark:disabled:text-red-800 disabled:hover:border-red-950  disabled:hover:cursor-not-allowed flex gap-2 justify-center items-center border-2 rounded-lg shadow-sm bg-gray-900 border-brand-primary  dark:hover:bg-gray-950  text-gray-50 dark:text-slate-300 dark:hover:text-brand-primary dark:hover:border-brand-primary hover:text-brand-primary"
-                    type="submit"
-                  >
-                    Create Now
-                  </button>
+                <div className="w-full flex flex-col justify-center items-center">
+                  {!isConnected ? (
+                    <w3m-button />
+                  ) : (
+                    <button
+                      className="w-[300px]  px-4 py-[5px] disabled:border-red-900 disabled:text-red-800 dark:disabled:hover:border-red-950 dark:disabled:border-red-900 dark:disabled:text-red-800 disabled:hover:border-red-950  disabled:hover:cursor-not-allowed flex gap-2 justify-center items-center border-2 rounded-lg shadow-sm bg-gray-900 border-brand-primary  dark:hover:bg-gray-950  text-gray-50 dark:text-slate-300 dark:hover:text-brand-primary dark:hover:border-brand-primary hover:text-brand-primary"
+                      type="submit"
+                    >
+                      {isCreatingProperty ? "Loading..." : "Create Now"}
+                    </button>
+                  )}
+                  {warning !== "" && (
+                    <p className="text-red-500 mt-4">{warning}</p>
+                  )}
                 </div>
               </form>
             </Form>
