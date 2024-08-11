@@ -16,10 +16,30 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Image from "next/image";
+import { useAccount, useWriteContract } from "wagmi";
+import ABI from "../contract/ABI.json";
+import Link from "next/link";
 
 export default function App() {
   const [properties, setProperties] = useState([]);
   const BACKEND_URI = "https://rent3-backend.onrender.com/";
+  const { address: userWalletAddress, isConnected } = useAccount();
+  const { data: hash, writeContractAsync, isPending } = useWriteContract();
+
+  function payRent(propertyID: number, price: number) {
+    const nullifierHash = "";
+    writeContractAsync({
+      abi: ABI.abi,
+      address: ABI.address as `0x${string}`,
+      functionName: "payRent",
+      args: [
+        BigInt(propertyID),
+        userWalletAddress,
+        BigInt(price),
+        nullifierHash,
+      ],
+    });
+  }
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -156,15 +176,35 @@ export default function App() {
                               <span className="font-bold">Rental Price:</span>{" "}
                               {property.rentalPrice}
                             </p>
-                            <button className="w-[80%] mx-auto mt-4  px-4 py-2 flex gap-2 justify-center items-center border-2 rounded-lg shadow-sm bg-gray-900 border-gray-400 hover:border-brand-primary  dark:hover:bg-gray-950  text-gray-50 dark:text-slate-300 dark:hover:text-brand-white dark:hover:border-brand-primary hover:text-brand-primary">
-                              Rent Now
-                            </button>
+
+                            <div className="w-full flex justify-center items-center gap-4">
+                              <button
+                                className="w-[80%] mx-auto px-4 py-2 flex gap-2 justify-center items-center border-2 rounded-lg shadow-sm bg-gray-900 border-gray-400 hover:border-brand-primary  dark:hover:bg-gray-950  text-gray-50 dark:text-slate-300 dark:hover:text-brand-white dark:hover:border-brand-primary hover:text-brand-primary"
+                                onClick={() =>
+                                  payRent(+property.id, property.rentalPrice)
+                                }
+                                disabled={!isConnected || isPending}
+                              >
+                                {isConnected
+                                  ? "Rent Now"
+                                  : "Connect Wallet To Rent"}
+                              </button>
+                              <w3m-button />
+                              {hash && (
+                                <Link
+                                  href={`https://sepolia.explorer.mode.network/tx/${hash}`}
+                                  className="test-blue-500 hover:text-blue-700 hover:underline"
+                                >
+                                  Transaction Hash: {hash.substring(0, 20)}...
+                                </Link>
+                              )}
+                            </div>
                           </div>
                         </DialogDescription>
                       </DialogHeader>
                     </DialogContent>
                   </Dialog>
-                )
+                ),
               )}
             </div>
           </section>
