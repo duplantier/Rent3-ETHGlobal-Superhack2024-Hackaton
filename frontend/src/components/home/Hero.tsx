@@ -61,7 +61,6 @@ export const Hero: React.FC = () => {
 
   const BACKEND_URI = process.env.NEXT_PUBLIC_BACKEND_URI;
   const handleVerify = async (proof: ISuccessResult) => {
-    localStorage.removeItem("nullifier_hash");
     const worldIdVerifyResponse = await fetch(`${BACKEND_URI}world-id/verify`, {
       method: "POST",
       headers: {
@@ -71,7 +70,7 @@ export const Hero: React.FC = () => {
     });
     setOnboardingNullifierHash(proof.nullifier_hash);
     if (!worldIdVerifyResponse.ok) {
-      throw new Error("Verification failed."); // IDKit will display the error message to the user in the modal
+      throw new Error("Verification failed.");
     }
   };
 
