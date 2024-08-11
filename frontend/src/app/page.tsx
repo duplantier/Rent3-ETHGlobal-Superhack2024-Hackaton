@@ -84,7 +84,7 @@ export default function App() {
                   images: string[];
                   rentalPrice: number;
                 }) => (
-                  <Dialog>
+                  <Dialog key={property.id}>
                     <DialogTrigger className="w-[300px] h-auto py-6 mx-auto flex flex-col justify-center items-center dark:text-brand-white text-brand-black border border-gray-700 dark:border-gray-200 px-2 my-4 rounded-lg">
                       <Image
                         src={property.images[0]}
@@ -114,6 +114,7 @@ export default function App() {
                             <div className="flex gap-2 w-full overflow-x-scroll my-4">
                               {property.images.map((image: string) => (
                                 <Image
+                                  key={image}
                                   src={image}
                                   alt="Property Image"
                                   width={200}
