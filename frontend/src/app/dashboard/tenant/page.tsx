@@ -150,7 +150,7 @@ const TenantPage = () => {
               rentalPrice: number;
             }) => (
               <Dialog key={property.id}>
-                <DialogTrigger className="w-[300px] bg-gray-50 dark:bg-gray-900 dark:border-gray-700 h-auto py-6 mx-auto flex flex-col justify-center items-center dark:text-brand-white text-brand-black border border-gray-700 px-2 my-4 rounded-lg">
+                <DialogTrigger className="w-[300px] bg-gray-50 dark:bg-brand-black dark:border-gray-700 h-auto py-6 mx-auto flex flex-col justify-center items-center dark:text-brand-white text-brand-black border border-gray-700 px-2 my-4 rounded-lg">
                   <Image
                     src={property.images[0]}
                     alt="Property Image"
