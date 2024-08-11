@@ -60,7 +60,7 @@ export const Hero: React.FC = () => {
   const userRole = getItemWithExpiry({ key: "userRole" });
 
   const BACKEND_URI = process.env.NEXT_PUBLIC_BACKEND_URI;
-  const IDKIT_APP_ID = process.env.WORLDCOIN_CLIENT_ID;
+  const IDKIT_APP_ID = process.env.NEXT_PUBLIC_WORLD_APP_ID;
   const handleVerify = async (proof: ISuccessResult) => {
     const worldIdVerifyResponse = await fetch(`${BACKEND_URI}world-id/verify`, {
       method: "POST",
@@ -133,7 +133,9 @@ export const Hero: React.FC = () => {
         userNullifierHash == null ||
         userRole == null ? (
           <IDKitWidget
-            app_id={IDKIT_APP_ID as `app_${string}` || "" as `app_${string}`}
+            app_id={
+              (IDKIT_APP_ID as `app_${string}`) || ("" as `app_${string}`)
+            }
             action={"testing-action"}
             onSuccess={onSuccess}
             handleVerify={handleVerify}
