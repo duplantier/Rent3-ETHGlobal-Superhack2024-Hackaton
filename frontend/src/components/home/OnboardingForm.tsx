@@ -23,6 +23,26 @@ const formSchema = z.object({
   email: z.string().email(),
 });
 
+function setItemWithExpiry({
+  key,
+  value,
+  ttl,
+}: {
+  key: string;
+  value: any;
+  ttl: number;
+}) {
+  const now = new Date();
+
+  // `item` is an object which contains the original value as well as the time when it will expire
+  const item = {
+    value: value,
+    expiry: now.getTime() + ttl,
+  };
+
+  localStorage.setItem(key, JSON.stringify(item));
+}
+
 const OnboardingForm = ({
   userNullifierHash,
 }: {
@@ -66,8 +86,18 @@ const OnboardingForm = ({
       const createOwnerData = await createOwnerResponse.json();
       if (createOwnerResponse.ok) {
         if (userOnboardingRole === "owners") {
+          setItemWithExpiry({
+            key: "userRole",
+            value: "owners",
+            ttl: 1000 * 60 * 60,
+          });
           router.push("/dashboard/owner");
         } else if (userOnboardingRole === "tenants") {
+          setItemWithExpiry({
+            key: "userRole",
+            value: "tenants",
+            ttl: 1000 * 60 * 60,
+          });
           router.push("/dashboard/tenant");
         }
       } else {

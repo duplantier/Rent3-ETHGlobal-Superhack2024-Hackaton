@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { ButtonProps } from "../ui/button";
 function setItemWithExpiry({
   key,
   value,
@@ -55,6 +56,8 @@ export const Hero: React.FC = () => {
     string | null
   >(null);
   const router = useRouter();
+  const userNullifierHash = getItemWithExpiry({ key: "nullifier_hash" });
+  const userRole = getItemWithExpiry({ key: "userRole" });
 
   const BACKEND_URI = process.env.NEXT_PUBLIC_BACKEND_URI;
   const handleVerify = async (proof: ISuccessResult) => {
@@ -79,10 +82,26 @@ export const Hero: React.FC = () => {
       ttl: 5000 * 60 * 60,
     });
 
+    // eğer bu nullifier_hash ile bir kullanıcı varsa, direkt dashboard'a yönlendir.
+    // Yoksa detaylatını seçip kullanıcı hesabını oluşturması için get-started'a yönlendir.
+
+    const isUserExistResponse = await fetch(
+      `${BACKEND_URI}nullifierHash/${onboardingNullifierHash}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nullifier_hash: onboardingNullifierHash }),
+      }
+    );
+
+    console.log("isUserExist", isUserExistResponse);
+
     router.push("/get-started");
   };
   return (
-    <div className="min-h-[100vh] w-full flex md:items-center md:justify-center bg-brand-white dark:bg-brand-black  antialiased bg-grid-black/[0.09] dark:bg-grid-white/[0.05] relative overflow-hidden">
+    <div className="min-h-[100vh] w-full flex md:items-center md:justify-center bg-brand-white dark:bg-brand-black  antialiased bg-grid-black/[0.09] dark:bg-grid-white/[0.09] relative overflow-hidden">
       <Spotlight
         className="-top-40 left-0 md:left-60 md:-top-20"
         fill="#27F2CD"
@@ -99,30 +118,56 @@ export const Hero: React.FC = () => {
           transparent rental experience, leveraging Base, Blockscout, and
           Worldcoin. Deployed on Mode.
         </p>
-        <IDKitWidget
-          app_id={"app_staging_cabc806110f5d7491c05482017dee619"}
-          action={"testing-action"}
-          onSuccess={onSuccess}
-          handleVerify={handleVerify}
-          verification_level={VerificationLevel.Device}
-        >
-          {({ open }) => (
-            // This is the button that will open the IDKit modal
-            <button
-              className="w-[300px] mt-8 px-4 py-2 flex gap-2 justify-center items-center border-2 rounded-lg shadow-sm bg-gray-900 border-gray-400 hover:border-brand-primary  dark:hover:bg-gray-950  text-gray-50 dark:text-slate-300 dark:hover:text-brand-white dark:hover:border-brand-primary hover:text-brand-primary "
-              onClick={open}
-            >
+        {userNullifierHash == "" ||
+        userNullifierHash == null ||
+        userRole == null ? (
+          <IDKitWidget
+            app_id={"app_staging_cabc806110f5d7491c05482017dee619"}
+            action={"testing-action"}
+            onSuccess={onSuccess}
+            handleVerify={handleVerify}
+            verification_level={VerificationLevel.Device}
+          >
+            {({ open }) => (
+              // This is the button that will open the IDKit modal
+              <button
+                className="w-[300px] mt-8 px-4 py-2 flex gap-2 justify-center items-center border-2 rounded-lg shadow-sm bg-gray-900 border-gray-400 hover:border-brand-primary  dark:hover:bg-gray-950  text-gray-50 dark:text-slate-300 dark:hover:text-brand-white dark:hover:border-brand-primary hover:text-brand-primary "
+                onClick={open}
+              >
+                <Image
+                  src={`/logos/worldcoin-white.svg`}
+                  alt="Logo"
+                  className="w-6 h-auto"
+                  width={20}
+                  height={40}
+                />
+                <h1>Verify With WorldID</h1>
+              </button>
+            )}
+          </IDKitWidget>
+        ) : (
+          <>
+            {/* <div className="flex gap-2 py-2 px-4 mt-6 z-50 items-center rounded-lg border bg-green-100 text-green-500 border-green-400 text-md ">
               <Image
-                src={`/logos/worldcoin-white.svg`}
+                src={`/logos/worldcoin-black.svg`}
                 alt="Logo"
                 className="w-6 h-auto"
                 width={20}
                 height={40}
               />
-              <h1>Verify With WorldID</h1>
-            </button>
-          )}
-        </IDKitWidget>
+              <div>
+                Verified with {userNullifierHash.slice(0, 10)}...
+                {userNullifierHash.slice(-10)}
+              </div>
+            </div> */}
+            <Link
+              href={`/dashboard/${userRole}`}
+              className="w-[250px] mt-4 px-4 py-2 flex gap-2 justify-center items-center border-2 rounded-lg shadow-sm bg-gray-900 border-gray-400 hover:border-brand-primary  dark:hover:bg-gray-950  text-gray-50 dark:text-slate-300 dark:hover:text-brand-white dark:hover:border-brand-primary hover:text-brand-primary "
+            >
+              Go to Dashboard
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );
