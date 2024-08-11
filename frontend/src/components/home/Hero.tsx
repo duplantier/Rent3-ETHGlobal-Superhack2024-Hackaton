@@ -105,7 +105,7 @@ export const Hero: React.FC = () => {
     if (isOwnerExist.id || isTenantExist.id) {
       console.log("user exist. Redirecting to the dashboard.");
       console.log("isOwnerExist", isOwnerExist);
-      console.log("isTenantExist", isTenantExist);
+      console.log("isTenantExissst", isTenantExist);
     } else {
       console.log("user does not exist. Redirecting to the get started page");
       router.push("/get-started");
