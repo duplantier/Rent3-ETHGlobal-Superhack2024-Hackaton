@@ -369,7 +369,7 @@ const OwnerPage = () => {
                     alt="Void"
                     className="h-auto "
                   />
-                  <h1 className="font-bold text-md">No property found</h1>
+                  <h1 className="font-bold text-md text-gray-100">No property found</h1>
                 </div>
               )}
             </div>

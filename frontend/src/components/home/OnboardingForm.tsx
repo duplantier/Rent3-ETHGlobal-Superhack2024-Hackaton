@@ -91,14 +91,14 @@ const OnboardingForm = ({
             value: "owners",
             ttl: 1000 * 60 * 60,
           });
-          router.push("/dashboard/owner");
+          router.push("/dashboard/owners");
         } else if (userOnboardingRole === "tenants") {
           setItemWithExpiry({
             key: "userRole",
             value: "tenants",
             ttl: 1000 * 60 * 60,
           });
-          router.push("/dashboard/tenant");
+          router.push("/dashboard/tenants");
         }
       } else {
         throw new Error(createOwnerData.message);
