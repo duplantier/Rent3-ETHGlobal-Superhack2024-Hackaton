@@ -24,7 +24,7 @@ Rent3 is a decentralized rental platform that provides a secure and transparent 
 
 ## 🌟 Project Development Progress
 
-Rent3 is builded in the ETHGlobal Superchain 2024 Async Hackathon
+Rent3 is builded for the ETHGlobal Superchain 2024 Async Hackathon. 🔗 [See the official event page](https://ethglobal.com/events/superhack2024) 
 
 <br>
 
@@ -38,7 +38,7 @@ Rent3 is builded in the ETHGlobal Superchain 2024 Async Hackathon
 
 ## 🛠️ Technologies Used
 
-### Front-End
+### 🖌️🎨 Front-End
 - Next.js
 - React.js 
 - TypeScript
@@ -56,7 +56,7 @@ Rent3 is builded in the ETHGlobal Superchain 2024 Async Hackathon
 - Figma for brand design
 - Wagmi hooks for contract interactions
 
-### Back-End
+### ⚙️ 🗄️ Back-End
 - NestJS
 - TypeScript
 - Prisma
@@ -69,20 +69,20 @@ Rent3 is builded in the ETHGlobal Superchain 2024 Async Hackathon
 - Worldcoin APIs
 - esLint
 
-### Contract
+### 📜 Contract
 - Remix (Solidity)
 
 <br>
 
-## 🛠️ Screenshots From The App
+## 🖼️ Screenshots From The App
 
-![](./frontend/public/ss1.jpg)
+![Landing Page](./frontend/public/ss1.jpg)
 <br><br>
-![](./frontend/public/ss2.jpg)
+![WorldID Verification](./frontend/public/ss2.jpg)
 <br><br>
-![](./frontend/public/ss3.jpg)
+![Getting Started Page](./frontend/public/ss3.jpg)
 <br><br>
-![](./frontend/public/ss4.jpg)
+![Property Owner Page](./frontend/public/ss4.jpg)
 <br><br>
-![](./frontend/public/ss6.jpg)
+![Unauthorized Page](./frontend/public/ss6.jpg)
 <br><br>
