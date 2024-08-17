@@ -61,6 +61,8 @@ Rent3 is builded in the ETHGlobal Superchain 2024 Async Hackathon
 - TypeScript
 - Prisma
 - Prisma ORM
+- PostgreSQL
+- Vercel DB
 - Faker.js
 - Jest
 - Render for deployment
