@@ -127,6 +127,21 @@ const TenantPage = () => {
         fill="#27F2CD"
       />
       <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+      <Link
+        href="/"
+        className="flex justify-center items-center gap-2 mb-6 z-10"
+      >
+        <Image
+          src={`${darkMode ? `/logo-white.svg` : `/logo-black.svg`}`}
+          alt="Logo"
+          className="w-10 rotate-90 h-auto"
+          width={20}
+          height={40}
+        />
+        <h1 className="tracking-tight font-black md:text-2xl lg:text-3xl dark:text-brand-white">
+          Rent3
+        </h1>
+      </Link>
       <h1 className="text-5xl mb-8 text-center font-bold text-brand-black dark:text-brand-white">
         Explore Properties
       </h1>

@@ -1,7 +1,7 @@
 "use client";
 import { UserCheck, UserSearch } from "lucide-react";
 import React, { useState } from "react";
-import { z } from "zod";
+import { set, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -52,6 +52,7 @@ const OnboardingForm = ({
     ""
   );
   const [isFormLoading, setIsFormLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<string | null>("");
   const router = useRouter();
   const onboardingForm = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -101,10 +102,14 @@ const OnboardingForm = ({
           router.push("/dashboard/tenants");
         }
       } else {
-        throw new Error(createOwnerData.message);
+        setIsError(
+          "An error occurre while creating your account. Please try again with a different Worldcoin account."
+        );
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsFormLoading(false);
     }
   }
 
@@ -205,6 +210,9 @@ const OnboardingForm = ({
               {isFormLoading ? "Loading..." : "Save"}
             </button>
           </div>
+          {isError && (
+            <div className="text-red-600 dark:text-red-400">{isError}</div>
+          )}
         </form>
       </Form>
     </div>
