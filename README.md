@@ -1,4 +1,4 @@
-![](./public/rent3banner.png)
+![](./frontend/public/rent3banner.png)
 
 # 🏠 Rent3
 Verify your identity with WorldID, select your role as Property Owner or Tenant, sell/rent properties with a blockchain-level security and transparency.
@@ -74,13 +74,13 @@ Rent3 is builded in the ETHGlobal Superchain 2024 Async Hackathon
 
 ## 🛠️ Screenshots From The App
 
-![](./public/ss1.jpg)
+![](./frontend/public/ss1.jpg)
 <br><br>
-![](./public/ss2.jpg)
+![](./frontend/public/ss2.jpg)
 <br><br>
-![](./public/ss3.jpg)
+![](./frontend/public/ss3.jpg)
 <br><br>
-![](./public/ss4.jpg)
+![](./frontend/public/ss4.jpg)
 <br><br>
-![](./public/ss6.jpg)
+![](./frontend/public/ss6.jpg)
 <br><br>
