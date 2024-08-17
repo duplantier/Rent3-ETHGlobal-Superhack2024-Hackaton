@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![](./public/rent3banner.png)
 
-## Getting Started
+# 🏠 Rent3
+Verify your identity with WorldID, select your role as Property Owner or Tenant, sell/rent properties with a blockchain-level security and transparency.
 
-First, run the development server:
+<br>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 📖 About The Project
+Rent3 is a decentralized rental platform that provides a secure and transparent rental experience, leveraging Worldcoin and Blockscout. Deployed on Mode.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🔗 More on [The ETHGlobal Official Showcase Page](https://ethglobal.com/showcase/rent3-8q0qv)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+🔗 [Live Demo](https://www.campusarc.io)
 
-## Learn More
+<br>
 
-To learn more about Next.js, take a look at the following resources:
+## 🏆 Rewards
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Blockscout Pool Prize
+- Worldcoin Pool Prize
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+<br>
 
-## Deploy on Vercel
+## 🌟 Project Development Progress
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Rent3 is builded in the ETHGlobal Superchain 2024 Async Hackathon
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<br>
+
+## 🤝 Team
+
+- **Hüseyin Karataş:** Brand Design, UI/UX Design and Development, Front-End Engineering, Implementing Back-End Interactions, Back-End Deployment
+- **Muriuki Muchiri:** Back-End Engineering, Implementing Contract Interactions, Back-End Deployment
+- **John Fáwọlé:** Contract Design, Development and Deployment
+
+<br>
+
+## 🛠️ Technologies Used
+
+### Front-End
+- Next.js
+- React.js 
+- TypeScript
+- TailwindCSS
+- Shadcn/ui
+- Aceternity UI
+- Framer Motion
+- React Hook Form
+- Zod
+- Lucide React
+- WalletConnect APIs for wallet management
+- Worldcoin APIs
+- Vercel for deployment
+- esLint
+- Figma for brand design
+- Wagmi hooks for contract interactions
+
+### Back-End
+- NestJS
+- TypeScript
+- Prisma
+- Prisma ORM
+- Faker.js
+- Jest
+- Render for deployment
+- Worldcoin APIs
+- esLint
+
+### Contract
+- Remix (Solidity)
+
+<br>
+
+## 🛠️ Screenshots From The App
+
+![](./public/ss1.jpg)
+<br><br>
+![](./public/ss2.jpg)
+<br><br>
+![](./public/ss3.jpg)
+<br><br>
+![](./public/ss4.jpg)
+<br><br>
+![](./public/ss6.jpg)
+<br><br>
